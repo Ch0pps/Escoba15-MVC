@@ -1,0 +1,6 @@
+package modelo;
+
+public enum Cambios {
+	LISTA_JUGADORES, ERROR, CARTAS_JUGADOR, CARTAS_MESA, TURNO, PUNTAJE_MAXIMO, ESTADO_JUEGO
+
+}
