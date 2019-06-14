@@ -2,6 +2,7 @@ package modelo;
 
 import java.util.ArrayList;
 
+import carta.Carta;
 import carta.ICarta;
 import carta.Mazo;
 import jugador.IJugador;
@@ -13,12 +14,12 @@ public class Juego {
 	// Attributes
 	
 	private ArrayList<Jugador> jugadores = new ArrayList<>();
-	private Mesa mesa = new Mesa();
+	private Jugador mesa = new Jugador("mesa");
 	private int puntajeMaximo = 21;
 	private Mazo mazo = new Mazo();
 	private Cambios cambio;
 	private ArrayList<IObservador> observadores = new ArrayList<>();
-	private EstadoJuego estadoJuego = EstadoJuego.CONFIGURANDO;
+	private EstadoJuego estadoJuego;
 	private String msgError = "";
 	private int jugadorActual = 0;
 	
@@ -46,7 +47,6 @@ public class Juego {
 			mesa.nuevaCarta(mazo.getCarta());
 			mesa.nuevaCarta(mazo.getCarta());
 			mesa.nuevaCarta(mazo.getCarta());
-			notificar(Cambios.CARTAS_MESA);
 			for (Jugador jugador : jugadores) {
 				repartirCartas(jugador);
 			}
@@ -59,7 +59,7 @@ public class Juego {
 	}
 	
 	public void agregarJugador(String jugador) {
-		if (jugador != "") {
+		if (jugador.length() >= 1) {
 			jugadores.add(new Jugador(jugador));
 			notificar(Cambios.LISTA_JUGADORES);
 		} else {
@@ -96,6 +96,7 @@ public class Juego {
 	
 	public void setPuntajeMaximo(int puntajeMaximo) {
 		this.puntajeMaximo = puntajeMaximo;
+		this.notificar(Cambios.PUNTAJE_MAXIMO);
 	}
 	
 	public IJugador[] getJugadores() {
@@ -121,10 +122,31 @@ public class Juego {
 
 	public void setEstadoJuego(EstadoJuego estadoJuego) {
 		this.estadoJuego = estadoJuego;
+		this.notificar(Cambios.ESTADO_JUEGO);
 	}
 	
 	public int getJugadorActual() {
 		return jugadorActual;
+	}
+
+	public void reset() {
+		jugadores = new ArrayList<>();
+		mesa = new Jugador("Mesa");
+		mazo = new Mazo();
+		msgError = "";
+		jugadorActual = 0;
+	}
+
+	public ICarta[] getCartasMesa() {
+		return mesa.getMano();
+	}
+
+	public void tirarCarta(int index) {
+		Jugador jugAux = jugadores.get(jugadorActual);
+		Carta[] cartaAux = jugAux.getManoCarta();
+		Carta aux = jugAux.tirarCarta(cartaAux[index]);
+		mesa.nuevaCarta(aux);
+		this.notificar(Cambios.CARTAS_MESA);
 	}
 
 }

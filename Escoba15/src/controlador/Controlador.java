@@ -33,19 +33,25 @@ public class Controlador implements IObservador {
 		switch (cambio) {
 		case LISTA_JUGADORES:
 			vista.cambioEnJugador();
+			break;
 		case ERROR:
 			vista.hayError(juego.getMsgError());
+			break;
 		case CARTAS_JUGADOR:
 			vista.cartasJugador();
+			break;
 		case CARTAS_MESA:
 			vista.cartasMesa();
+			break;
 		case TURNO:
 			vista.cambioDeTurno();
+			break;
 		case PUNTAJE_MAXIMO:
 			vista.cambioDeOpciones();
 			break;
 		case ESTADO_JUEGO:
 			vista.hayCambioDeEstado(juego.getEstadoJuego());
+			break;
 		}
 	}
 
@@ -87,5 +93,17 @@ public class Controlador implements IObservador {
 	
 	public int getJugadorActual() {
 		return juego.getJugadorActual();
+	}
+
+	public void reset() {
+		juego.reset();
+	}
+
+	public ICarta[] getCartasMesa() {
+		return juego.getCartasMesa();
+	}
+
+	public void tirarCarta(int index) {
+		juego.tirarCarta(index);
 	}
 }
