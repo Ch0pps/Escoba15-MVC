@@ -32,6 +32,15 @@ public class Jugador implements IJugador {
 		return cartas;
 	}
 	
+	public Carta[] getManoCarta() {
+		Carta[] cartas = new Carta[mano.size()];
+		int i = 0;
+		for (Carta c : mano) {
+			cartas[i++] = c;
+		}
+		return cartas;
+	}
+	
 	public ICarta[] getCartas() {
 		ICarta[] cartas = new ICarta[misCartas.size()];
 		int i = 0;
